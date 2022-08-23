@@ -21,3 +21,11 @@ code {
   margin: 0 auto;
   max-width: 1200px;
 }
+
+button {
+  cursor: pointer;
+}
+
+a{
+  text-decoration: none;
+}

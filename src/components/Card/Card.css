@@ -1,6 +1,26 @@
+.card-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+}
+
+.card-container {
+    height: 700px;
+    width: 900px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 1em;
+}
+
 .card {
     background-color: #fff;
     display: flex;
+    width: 220px;
+    height: 250px;
     justify-content: center;
     align-items: center;
     border-radius: 5px;
@@ -21,8 +41,32 @@
     }
 }
 
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-info p {
+    font-size: 37px;
+    margin: 0 0 10px 10px;
+}
+
+.card-info p:first-child {
+    margin-right: 80px;
+}
+
+
+
 .card img {
-    max-width: 80%;
+    max-width: 100%;
     max-height: 80%;
     transition: transform 0.5s;
     transform: scale(0);
@@ -55,4 +99,59 @@
 
 .card.active img {
     transform: scale(1);
+}
+
+
+.modal__outter {
+    position: fixed;
+    background-color: #00000097;
+    width: 100vw;
+    height: 100vh;
+    inset: 0;
+    z-index: 1;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal__inner {
+    position: relative;
+    padding: 20px 25px 28px 25px;
+    z-index: 2;
+    width: 500px;
+    background-color: white;
+    text-align: center;
+    margin: 0px auto;
+    animation: 2s appear linear;
+}
+
+@keyframes appear {
+
+    0%, 
+    30%{
+        opacity: 0;
+    }
+
+    30%, 
+    100% {
+        opacity: 1;
+    }
+
+
+}
+
+.close-div {
+    display: flex;
+    justify-content: end;
+}
+
+.close-div img {
+    width: 30px;
+    height: 30px;
+}
+
+.modal__inner p {
+    font-size: 36px;
+    margin: 10px 0;
 }
