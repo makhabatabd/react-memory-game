@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
+import { authContext } from '../authContext';
 import { getCards } from '../helpers';
 import Card from './Card';
 import "./Card.css"
@@ -11,19 +12,26 @@ const Cards = () => {
     const [correctCards, setCorrectCards] = useState(0)
     let username = localStorage.getItem("user")
     const gameScore = JSON.parse(localStorage.getItem("gameScore") || null) || [];
-    const [cards, setCards] = useState(() => getCards(6))
     const [isEnable, setIsEnable] = useState(true)
-
+    const { mode } = useContext(authContext);
+    const [cards, setCards] = useState(() => getCards(mode))
+    const [modal, setModal] = useState(false)
+    
     useEffect(() => {
         isFinish()
     }, [timer])
 
+    function checkCorrect(element) {
+        return element.stat == "correct"
+    }
+
     function isFinish() {
-        if (correctCards < 3) {
+        if (!cards.every(checkCorrect)) {
             setTimeout(function(){
             setTimer(timer + 1)
             }, 1000);
-        } else if (correctCards === 3) {
+        } else if (cards.every(checkCorrect)) {
+            setModal(true)
             if (gameScore.length === 0) {
                 gameScore.push(tableScore)
             }
@@ -90,6 +98,7 @@ const Cards = () => {
         setMoves(0)
         setTimer(0)
         setCorrectCards(0)
+        setModal(false)
         cards.map((item) => {
             item.stat = ""
         })
@@ -126,12 +135,11 @@ const Cards = () => {
                 ))}
             </div>
             </div>
-            {
-                correctCards === 3 &&
+            { modal &&
                 <div className="modal__outter">
                     <div className="modal__inner">
                         <div className="close-div">
-                            <img onClick={() => setCorrectCards(correctCards - 1)} src="https://cdn-icons-png.flaticon.com/512/1828/1828778.png" alt="close btn" />
+                            <img onClick={() => setModal(false)} src="https://cdn-icons-png.flaticon.com/512/1828/1828778.png" alt="close btn" />
                         </div>
                         <p>Player: {username}</p>
                         <p>Time Used: {timer} seconds</p>

@@ -97,9 +97,9 @@ const cards = [
   },
 ];
 
-export function getCards(n) {
-  if (n == 6) {
-    return cards.slice(0, 6).sort(() => Math.random() - 0.5);
+export function getCards(mode) {
+  if (mode === "normal") {
+    return cards.slice(0, 8).sort(() => Math.random() - 0.5);
   } else {
     return cards.sort(() => Math.random() - 0.5);
   }
