@@ -11,7 +11,6 @@ const Auth = () => {
             localStorage.setItem("user", name)
         } 
     }
-    // localStorage.setItem("gameScores", [])
     return (
         <div className='main-auth'>
             <div className="container">
