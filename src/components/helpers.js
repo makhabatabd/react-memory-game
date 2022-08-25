@@ -97,10 +97,27 @@ const cards = [
   },
 ];
 
+const cardsArray = [...cards]
 export function getCards(mode) {
+  console.log(
+    cardsArray
+      .sort((a, b) => a.id - b.id)
+      .slice(0, 8)
+      .sort(() => Math.random() - 0.5)
+  );
   if (mode === "normal") {
-    return cards.slice(0, 8).sort(() => Math.random() - 0.5);
-  } else {
-    return cards.sort(() => Math.random() - 0.5);
+    const num1 = Math.floor(Math.random() * (1 - 0 + 1) + 0);
+    const num2 = Math.floor(Math.random() * (3 - 2 + 1) + 2);
+    const num3 = Math.floor(Math.random() * (5 - 4 + 1) + 4);
+    const num4 = Math.floor(Math.random() * (7 - 6 + 1) + 6);
+    console.log(num1, num2, num3, num4)
+    const arr = cardsArray.filter(item => {
+      if (item.id === num1 || item.id === num2 || item.id === num3 || item.id === num4) {
+        return item
+      }
+    })
+    return arr.sort((a, b) => a.id - b.id).slice(0, 8).sort(() => Math.random() - 0.5);
+  } else if(mode === "pro") {
+    return cardsArray.sort(() => Math.random() - 0.5);
   }
 }

@@ -1,28 +1,44 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { authContext } from '../authContext';
+import { getCards } from '../helpers';
 import "./LeaderBoard.css"
 
 const LeaderBoard = () => {
     const gameScore = JSON.parse(localStorage.getItem("gameScore")) || [];
-    const {board, setBoard} = useContext(authContext)
-    if (board === "normal") {
-        gameScore.sort((a, b) => a.score - b.score);
-    } else if (board === "seconds") {
-        gameScore.sort((a, b) => a.time - b.time);
-    } else if (board === "moves") {
-        gameScore.sort((a, b) => a.moves - b.moves);
+    const { board, setBoard } = useContext(authContext)
+    const proScore = JSON.parse(localStorage.getItem("proScore")) || [];
+    const { mode } = useContext(authContext);
+    const [cards, setCards] = useState(() => getCards(mode))
+     let scoreArray = []
+      if (mode === "normal") {
+        scoreArray = [...gameScore]
+    } else if(mode === "pro") {
+        scoreArray = [...proScore]
     }
+    if (board === "normal") {
+        scoreArray.sort((a, b) => a.score - b.score);
+    } else if (board === "seconds") {
+        scoreArray.sort((a, b) => a.time - b.time);
+    } else if (board === "moves") {
+        scoreArray.sort((a, b) => a.moves - b.moves);
+    }
+
+     function dropStat() {
+        cards.map((item) => {
+            item.stat = ""
+        })
+    }
+
     const handleChange = (event) => {
         setBoard(event.target.value)
     }
-    console.log(board)
     return (
         <div className="container">
             <div id="high-scores">
                 <h1 id="final-score">LeaderBoard:</h1>
                 <h3 className='board-chooser'>Choose your board to check:</h3>
-                <div className="wrapper">
+                <div className="wrapper leader-wrapper">
                         <input type="radio" value="normal"
                             checked={board === 'normal'}
                             onChange={handleChange}
@@ -39,7 +55,7 @@ const LeaderBoard = () => {
                             id="option-3" />
                         <label htmlFor="option-1" className="option option-1">
                             <div className="dot"></div>
-                            <span>Normal</span>
+                            <span>Score</span>
                             </label>
                         <label htmlFor="option-2" className="option option-2">
                             <div className="dot"></div>
@@ -51,16 +67,16 @@ const LeaderBoard = () => {
                         </label>
                 </div>
                 <ul id="high-scores-list">
-                    {board === "normal" ? gameScore.map((item, index) => {
+                    {board === "normal" ? scoreArray.map((item, index) => {
                         return <li key={index} className='high-score'>{item.name} - {item.score}</li>
-                    }) : board === "seconds" ? gameScore.map((item, index) => {
+                    }) : board === "seconds" ? scoreArray.map((item, index) => {
                         return <li key={index} className='high-score'>{item.name} - {item.time}</li>
-                    }) : board === "moves"? gameScore.map((item, index) => {
+                    }) : board === "moves"? scoreArray.map((item, index) => {
                         return <li key={index} className='high-score'>{item.name} - {item.moves}</li>
                     }): "" }
                 </ul>
                 <Link to="/">
-                    <button className="btn">Go Home</button>
+                    <button className="btn" onClick={()=>dropStat()}>Go Home</button>
                 </Link>
             </div>
         </div>

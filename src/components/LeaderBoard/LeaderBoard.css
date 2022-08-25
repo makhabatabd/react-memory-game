@@ -42,4 +42,19 @@
     .high-score {
         font-size: 2.1rem;
     }
+
+    .board-chooser {
+        text-align: center;
+    }
+
+    .leader-wrapper {
+        flex-direction: column;
+        height: 175px;
+        background: none;
+        width: 8rem;
+    }
+
+    .leader-wrapper .option {
+        margin-bottom: 10px;
+    }
 }
