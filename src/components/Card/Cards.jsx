@@ -41,13 +41,14 @@ const Cards = () => {
             }
       if (gameScore.length > 0) {
         gameScore.map((item) => {
-          if (item.name === username && item.score > score) {
-            item.score = score;
+          if (item.name === username && item.score > score && score !==0 && item.time > timer && timer !== 0 && item.moves > moves && moves !== 0) {
+              item.score = score;
+              item.time = timer; 
+              item.moves = moves
           }
         });
       }
-            gameScore.sort((a, b) => a.score - b.score);
-            gameScore.splice(7);
+            gameScore.splice(5);
             localStorage.setItem("gameScore", JSON.stringify(gameScore))
             localStorage.setItem("recentScore", JSON.stringify(recentScore))
         }
@@ -115,7 +116,9 @@ const Cards = () => {
 
     const tableScore = {
         name: username, 
-        score : score
+        score: score,
+        moves: moves, 
+        time: timer
     }
     
     return (

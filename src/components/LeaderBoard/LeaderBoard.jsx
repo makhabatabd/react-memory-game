@@ -1,17 +1,63 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { authContext } from '../authContext';
 import "./LeaderBoard.css"
 
 const LeaderBoard = () => {
     const gameScore = JSON.parse(localStorage.getItem("gameScore")) || [];
+    const {board, setBoard} = useContext(authContext)
+    if (board === "normal") {
+        gameScore.sort((a, b) => a.score - b.score);
+    } else if (board === "seconds") {
+        gameScore.sort((a, b) => a.time - b.time);
+    } else if (board === "moves") {
+        gameScore.sort((a, b) => a.moves - b.moves);
+    }
+    const handleChange = (event) => {
+        setBoard(event.target.value)
+    }
+    console.log(board)
     return (
         <div className="container">
             <div id="high-scores">
                 <h1 id="final-score">LeaderBoard:</h1>
+                <h3 className='board-chooser'>Choose your board to check:</h3>
+                <div className="wrapper">
+                        <input type="radio" value="normal"
+                            checked={board === 'normal'}
+                            onChange={handleChange}
+                            name="select" id="option-1"/>
+                        <input type="radio" value="seconds"
+                            checked={board === 'seconds'}
+                            onChange={handleChange}
+                            name="select"
+                        id="option-2" />
+                    <input type="radio" value="moves"
+                            checked={board === 'moves'}
+                            onChange={handleChange}
+                            name="select"
+                            id="option-3" />
+                        <label htmlFor="option-1" className="option option-1">
+                            <div className="dot"></div>
+                            <span>Normal</span>
+                            </label>
+                        <label htmlFor="option-2" className="option option-2">
+                            <div className="dot"></div>
+                            <span>Seconds</span>
+                    </label>
+                     <label htmlFor="option-3" className="option option-3">
+                            <div className="dot"></div>
+                            <span>Moves</span>
+                        </label>
+                </div>
                 <ul id="high-scores-list">
-                    {gameScore.map((item, index) => {
+                    {board === "normal" ? gameScore.map((item, index) => {
                         return <li key={index} className='high-score'>{item.name} - {item.score}</li>
-                    })}
+                    }) : board === "seconds" ? gameScore.map((item, index) => {
+                        return <li key={index} className='high-score'>{item.name} - {item.time}</li>
+                    }) : board === "moves"? gameScore.map((item, index) => {
+                        return <li key={index} className='high-score'>{item.name} - {item.moves}</li>
+                    }): "" }
                 </ul>
                 <Link to="/">
                     <button className="btn">Go Home</button>
