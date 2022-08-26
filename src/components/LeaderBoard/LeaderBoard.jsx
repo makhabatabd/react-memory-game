@@ -9,7 +9,6 @@ const LeaderBoard = () => {
     const { board, setBoard } = useContext(authContext)
     const proScore = JSON.parse(localStorage.getItem("proScore")) || [];
     const { mode } = useContext(authContext);
-    const [cards, setCards] = useState(() => getCards(mode))
      let scoreArray = []
       if (mode === "normal") {
         scoreArray = [...gameScore]
@@ -22,12 +21,6 @@ const LeaderBoard = () => {
         scoreArray.sort((a, b) => a.time - b.time);
     } else if (board === "moves") {
         scoreArray.sort((a, b) => a.moves - b.moves);
-    }
-
-     function dropStat() {
-        cards.map((item) => {
-            item.stat = ""
-        })
     }
 
     const handleChange = (event) => {
@@ -76,7 +69,7 @@ const LeaderBoard = () => {
                     }): "" }
                 </ul>
                 <Link to="/">
-                    <button className="btn" onClick={()=>dropStat()}>Go Home</button>
+                    <button className="btn">Go Home</button>
                 </Link>
             </div>
         </div>

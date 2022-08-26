@@ -213,7 +213,7 @@ const Cards = () => {
                         <p>Time Used: {timer} seconds</p>
                             <p>Moves made: {moves}</p>
                         <Link to="/leaderboard">
-                        <button className='btn'>Leaderboard</button>
+                        <button onClick={()=>dropStat()} className='btn'>Leaderboard</button>
                         </Link>
                         <Link to="/">
                             <button onClick={()=>dropStat()} className='btn'>Home</button>
