@@ -120,7 +120,6 @@ const Cards = () => {
     timeCount()
 
     function cardClick(id) {
-        console.log(id);
         if (isEnable) {
             if (prev === -1) {
             cards[id].stat = "active"
@@ -180,6 +179,11 @@ const Cards = () => {
         setIsEnable(true)
     }
 
+    function exit() {
+        dropStat()
+        navigate("/")
+    }
+
 
     
     return (
@@ -193,7 +197,7 @@ const Cards = () => {
                 </div>
                     <div className="card-options">
                         {!isPause ? <button onClick={() => changeStates()}>Pause</button> : <button onClick={() => undoChangesStates()}>Start</button>}
-                    <button onClick={()=>navigate("/")}>Exit</button>
+                        <button onClick={() => exit()}>Exit</button>
                 </div>
             </div>
                 <div className='card-container'>
