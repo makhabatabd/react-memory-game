@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { authContext } from '../authContext';
-import { getCards } from '../helpers';
 import "./LeaderBoard.css"
 
 const LeaderBoard = () => {
@@ -9,10 +8,10 @@ const LeaderBoard = () => {
     const { board, setBoard } = useContext(authContext)
     const proScore = JSON.parse(localStorage.getItem("proScore")) || [];
     const { mode } = useContext(authContext);
-     let scoreArray = []
-      if (mode === "normal") {
+    let scoreArray = []
+    if (mode === "normal") {
         scoreArray = [...gameScore]
-    } else if(mode === "pro") {
+    } else if (mode === "pro") {
         scoreArray = [...proScore]
     }
     if (board === "normal") {
@@ -72,8 +71,7 @@ const LeaderBoard = () => {
                     <button className="btn">Go Home</button>
                 </Link>
             </div>
-        </div>
-    );
+        </div >)  
 };
 
 export default LeaderBoard;

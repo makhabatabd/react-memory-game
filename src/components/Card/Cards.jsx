@@ -17,9 +17,10 @@ const Cards = () => {
     const { mode } = useContext(authContext);
     const [cards, setCards] = useState(() => getCards(mode))
     const [modal, setModal] = useState(false)
-    const [enableTimer, setEnableTimer] = useState(false)
     const [isPause, setIsPause] = useState(false)
     const navigate = useNavigate();
+    const [loader, setLoader] = useState(true)
+    const [intervalNum, setIntervalNum] = useState(0)
     
     useEffect(() => {
         isFinish()
@@ -30,14 +31,15 @@ const Cards = () => {
     }, [])
 
     function checkCorrect(element) {
-        return element.stat == "correct"
+        return element.stat == "hide"
     }
 
 
     function isFinish() {
-         if (cards.every(checkCorrect)) {
-             setModal(true)
-             setEnableTimer(false)
+        if (cards.every(checkCorrect)) {
+            clearInterval(intervalNum)
+             setIntervalNum(0)
+            setModal(true)
         if (tableScore.score > 0) {
             if (mode === "normal") {
              if (gameScore.length === 0) {
@@ -49,7 +51,7 @@ const Cards = () => {
             }
             if (gameScore.length > 0) {
             gameScore.map((item) => {
-          if (item.name === username && item.score > score && score !==0 && item.time > timer && timer !== 0 && item.moves > moves && moves !== 0) {
+          if (item.name === username && item.score > score && item.time > timer  && item.moves > moves) {
               item.score = score;
               item.time = timer; 
               item.moves = moves
@@ -90,6 +92,10 @@ const Cards = () => {
         if(cards[current].id == cards[prev].id){
             cards[current].stat = "correct"
             cards[prev].stat = "correct"
+            setTimeout(() => {
+                cards[current].stat = "hide"
+                cards[prev].stat = "hide"
+            },500)
             setCards([...cards])
             setPrev(-1)
             setCorrectCards(correctCards + 1)
@@ -110,16 +116,15 @@ const Cards = () => {
         }, 900);
     }
 
-    function timeCount() {
-        if (enableTimer && !isPause) {
-            setTimeout(function(){
-            setTimer(timer + 1)
-        }, 1000);
-        }
-    }
-    timeCount()
-
     function cardClick(id) {
+        if (!loader) {
+            if (!intervalNum && !isPause) {
+                const interval = setInterval(() => {
+                 if(!modal) setTimer(prev => prev+1)
+                }, 1000)
+                setIntervalNum(interval)
+          }   
+
         if (isEnable) {
             if (prev === -1) {
             cards[id].stat = "active"
@@ -131,9 +136,9 @@ const Cards = () => {
                 match(id)
             }
             setMoves(moves + 1)
-        } 
-        setEnableTimer(true)
+            } 
     }
+}
 
 
     function startOver() {
@@ -142,6 +147,7 @@ const Cards = () => {
         setTimer(0)
         setCorrectCards(0)
         setModal(false)
+        setLoader(true)
         cards.map((item) => {
             item.stat = ""
         })
@@ -172,11 +178,17 @@ const Cards = () => {
     function changeStates() {
         setIsPause(true)
         setIsEnable(false)
+        clearInterval(intervalNum)
+        setIntervalNum(0)
     }
 
     function undoChangesStates() {
         setIsPause(false)
         setIsEnable(true)
+        const interval = setInterval(() => {         
+        if(!modal) setTimer(prev => prev+1)
+        }, 1000)
+        setIntervalNum(interval)
     }
 
     function exit() {
@@ -203,7 +215,7 @@ const Cards = () => {
                 <div className='card-container'>
                     {cards.map((item, index) => (
                         <Card key={index} item={item}
-                        id={index} cardClick={cardClick} />
+                        id={index} cardClick={cardClick} setLoader={setLoader} loader={loader} />
                     ))}
                 </div>
         </div>
