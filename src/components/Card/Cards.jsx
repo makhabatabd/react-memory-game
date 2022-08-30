@@ -113,7 +113,7 @@ const Cards = () => {
 
         setTimeout(() => {
            setIsEnable(true)
-        }, 900);
+        }, 1000);
     }
 
     function cardClick(id) {
